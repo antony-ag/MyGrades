@@ -8,6 +8,40 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="br.com.fatecpg.mygrades.Detalhes">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nota da P1"
+        android:id="@+id/txtP1"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nota da P2"
+        android:id="@+id/txtP2"
+        android:layout_below="@+id/txtP1"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gravar notas"
+        android:id="@+id/gravar"
+        android:layout_below="@+id/txtP2"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Excluir disciplina"
+        android:id="@+id/excluir"
+        android:layout_below="@+id/gravar"
+        android:layout_centerHorizontal="true" />
+
 
 </RelativeLayout>
