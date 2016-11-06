@@ -37,7 +37,10 @@ public class Detalhes extends AppCompatActivity {
         return e;
     }
 
-
+    /**
+     * Exclui o arquivo da disciplina
+     * @param view
+     */
     public void excluir(View view){
 
         Toast.makeText(
@@ -58,6 +61,10 @@ public class Detalhes extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Grava as notas no arquivo da disciplina
+     * @param view
+     */
     public void gravar(View view){
         double p1, p2;
 
