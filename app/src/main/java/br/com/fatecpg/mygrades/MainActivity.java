@@ -1,7 +1,9 @@
 package br.com.fatecpg.mygrades;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,11 +14,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<String> disciplinas = new  ArrayList<>();
     private ListView list;
+    File[] dirFiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,20 @@ public class MainActivity extends AppCompatActivity {
 
             +++++++++++++++++++++++++++++++++++++++++++
             */
+            FileOutputStream output;
+            try{
+                output = openFileOutput(newDisc, Context.MODE_PRIVATE);
+                output.close();
+            }catch(Exception ex){
+                Toast.makeText(
+                        this,
+                        "Erro ao gravar o arquivo: "+ex.getLocalizedMessage(),
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+
+
+
 
             RefreshList();
 
@@ -85,10 +104,15 @@ public class MainActivity extends AppCompatActivity {
 
         +++++++++++++++++++++++++++++++++++++++++++
         */
-
-        for(int i = 1; i<=3; i++){
-            disciplinas.add("Opção " + i);
+        ArrayList<String> files = new ArrayList<>();
+        File dir = getFilesDir();
+        dirFiles = dir.listFiles();
+        for (int i = 0; i < dirFiles.length; i++) {
+            if(!dirFiles[i].isDirectory()) {
+                disciplinas.add(dirFiles[i].getName());
+            }
         }
+
     }
 
     /**
