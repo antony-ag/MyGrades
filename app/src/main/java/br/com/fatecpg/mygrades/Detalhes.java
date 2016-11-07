@@ -1,11 +1,14 @@
 package br.com.fatecpg.mygrades;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +24,7 @@ public class Detalhes extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        View view;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhes);
 
@@ -34,6 +38,8 @@ public class Detalhes extends AppCompatActivity {
         txtdisc.setText("Disciplina: " + disciplinas.get(idDisc));
 
         refreshNotas();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
     }
 
     public EditText getEditText(int id){
@@ -46,22 +52,17 @@ public class Detalhes extends AppCompatActivity {
      * @param view
      */
     public void excluir(View view){
-/*
-        +++++++++++++++++++++++++++++++++++++++++++
 
-        EXCLUIR O ARQUIVO DE DISCIPLINA
-
-        +++++++++++++++++++++++++++++++++++++++++++
-        */
         File dir = getFilesDir();
         File file = new File(dir, disciplinas.get(idDisc));
-        boolean deleted = file.delete();
+        file.delete();
 
         Toast.makeText(
             getApplicationContext()
             , "Disciplina " + disciplinas.get(idDisc) + " removida!"
             , Toast.LENGTH_SHORT
         ).show();
+
         disciplinas.remove(idDisc);
 
         finish();
@@ -72,6 +73,7 @@ public class Detalhes extends AppCompatActivity {
      * @param view
      */
     public void gravar(View view){
+        hideKeyboard(view);
         float p1, p2;
 
         try {
@@ -114,15 +116,19 @@ public class Detalhes extends AppCompatActivity {
 
             TextView etp1 = (TextView)findViewById(R.id.textP1);
             TextView etp2 = (TextView)findViewById(R.id.textP2);
-            etp1.setText("Nota da P1 -> " + p1);
-            etp2.setText("Nota da P2 -> " + p2);
+            etp1.setText(String.valueOf(p1));
+            etp2.setText(String.valueOf(p2));
 
             EditText ed1 = (EditText)findViewById(R.id.edP1);
             EditText ed2 = (EditText)findViewById(R.id.edP2);
-            ed1.setText(""+p1);
-            ed2.setText(""+p2);
+            ed1.setText("");
+            ed2.setText("");
 
         }catch (Exception Ex){}
     }
 
+    private void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) view.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }

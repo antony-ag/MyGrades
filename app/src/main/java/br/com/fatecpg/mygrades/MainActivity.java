@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         LerDisciplinas();
         RefreshList();
         ListenerList();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
 
     }
 
@@ -61,13 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
                 disciplinas.add(newDisc);
 
-            /*
-            +++++++++++++++++++++++++++++++++++++++++++
 
-            CRIAR O NOVO ARQUIVO DE DISCIPLINA
-
-            +++++++++++++++++++++++++++++++++++++++++++
-            */
                 FileOutputStream output;
                 try {
                     output = openFileOutput(newDisc, Context.MODE_PRIVATE);
@@ -96,13 +93,7 @@ public class MainActivity extends AppCompatActivity {
     private void LerDisciplinas(){
         disciplinas.clear();
 
-        /*
-        +++++++++++++++++++++++++++++++++++++++++++
 
-        LER TODOS OS ARQUIVOS DE DISCIPLINA E ADICIONAR NO ARRAY
-
-        +++++++++++++++++++++++++++++++++++++++++++
-        */
         ArrayList<String> files = new ArrayList<>();
         File dir = getFilesDir();
         dirFiles = dir.listFiles();
