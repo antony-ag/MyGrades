@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
         LerDisciplinas();
         RefreshList();
-
     }
 
     public EditText getEditText(int id){
@@ -58,7 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
             newDisc = getEditText(R.id.editNewDisc).getText().toString();
 
-            disciplinas.add(newDisc);
+            if(!disciplinas.contains(newDisc)) {
+
+                disciplinas.add(newDisc);
 
             /*
             +++++++++++++++++++++++++++++++++++++++++++
@@ -67,26 +68,24 @@ public class MainActivity extends AppCompatActivity {
 
             +++++++++++++++++++++++++++++++++++++++++++
             */
-            FileOutputStream output;
-            try{
-                output = openFileOutput(newDisc, Context.MODE_PRIVATE);
-                output.close();
-            }catch(Exception ex){
-                Toast.makeText(
-                        this,
-                        "Erro ao gravar o arquivo: "+ex.getLocalizedMessage(),
-                        Toast.LENGTH_LONG
-                ).show();
+                FileOutputStream output;
+                try {
+                    output = openFileOutput(newDisc, Context.MODE_PRIVATE);
+                    output.close();
+                } catch (Exception ex) {
+                    Toast.makeText(
+                            this,
+                            "Erro ao gravar o arquivo: " + ex.getLocalizedMessage(),
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+
+                RefreshList();
+
+                Toast.makeText(getApplicationContext(), "Adicionado " + newDisc, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(),"Esta disciplina já existe!",Toast.LENGTH_LONG).show();
             }
-
-
-
-
-            RefreshList();
-
-            Toast.makeText(getApplicationContext(),"Adicionado " + newDisc,Toast.LENGTH_LONG).show();
-
-
         }
 
     }

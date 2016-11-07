@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_detalhes"
     android:layout_width="match_parent"
@@ -11,12 +11,18 @@
     android:orientation="vertical"
     tools:context="br.com.fatecpg.mygrades.Detalhes">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="P1"
+        android:textSize="25dp"
+        android:id="@+id/textDisc" />
+
     <br.com.fatecpg.mygrades.AutoHideKeyboardEditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Nota da P1"
-        android:id="@+id/txtP1"
-        android:layout_alignParentTop="true"
+        android:id="@+id/edP1"
         android:inputType="numberDecimal"
         android:layout_centerHorizontal="true" />
 
@@ -24,28 +30,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Nota da P2"
-        android:id="@+id/txtP2"
-        android:layout_below="@+id/txtP1"
-        android:inputType="numberDecimal"
-        android:layout_centerHorizontal="true"/>
+        android:id="@+id/edP2"
+        android:inputType="numberDecimal" />
+
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Gravar notas"
         android:id="@+id/gravar"
-        android:layout_below="@+id/txtP2"
-        android:onClick="gravar"
-        android:layout_centerHorizontal="true"/>
+        android:onClick="gravar" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Excluir disciplina"
         android:id="@+id/excluir"
-        android:layout_below="@+id/gravar"
-        android:onClick="excluir"
-        android:layout_centerHorizontal="true" />
+        android:onClick="excluir" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="P1"
+        android:textSize="25dp"
+        android:id="@+id/textP1" />
 
 
-</RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="P2"
+        android:textSize="25dp"
+        android:id="@+id/textP2" />
+
+
+
+</LinearLayout>
