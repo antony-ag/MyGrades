@@ -7,14 +7,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class Detalhes extends AppCompatActivity {
     private ArrayList<String> disciplinas = new  ArrayList<>();
     private int idDisc;
     SharedPreferences pref;
+    File[] dirFiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,37 +26,14 @@ public class Detalhes extends AppCompatActivity {
 
         //Recupera os dados passados pela main
         Intent main = getIntent();
-        int idDisc = main.getIntExtra("idDisc", 0); //Este é o índice do array, corresponde a disciplina clicada no main activity
+        idDisc = main.getIntExtra("idDisc", 0); //Este é o índice do array, corresponde a disciplina clicada no main activity
         disciplinas = main.getStringArrayListExtra("disciplinas"); //Dados do ListView
 
 
-        Toast.makeText(
-            getApplicationContext()
-            , "Você escolheu a opção " + disciplinas.get(idDisc)
-            , Toast.LENGTH_SHORT
-        ).show();
+        TextView txtdisc = (TextView)findViewById(R.id.textDisc);
+        txtdisc.setText("Disciplina: " + disciplinas.get(idDisc));
 
-        pref = this.getSharedPreferences(disciplinas.get(idDisc), Context.MODE_PRIVATE);
-
-
-
-
-
-
-        try {
-            float p1 = pref.getFloat("p1", 0);
-            float p2 = pref.getFloat("p2", 0);
-
-            EditText etp1 = (EditText)findViewById(R.id.txtP1);
-            EditText etp2 = (EditText)findViewById(R.id.txtP2);
-            etp1.setText("Nota da P1 -> " + p1);
-            etp2.setText("Nota da P2 -> " + p2);
-
-        }catch (Exception Ex){}
-
-
-
-
+        refreshNotas();
     }
 
     public EditText getEditText(int id){
@@ -66,6 +46,16 @@ public class Detalhes extends AppCompatActivity {
      * @param view
      */
     public void excluir(View view){
+/*
+        +++++++++++++++++++++++++++++++++++++++++++
+
+        EXCLUIR O ARQUIVO DE DISCIPLINA
+
+        +++++++++++++++++++++++++++++++++++++++++++
+        */
+        File dir = getFilesDir();
+        File file = new File(dir, disciplinas.get(idDisc));
+        boolean deleted = file.delete();
 
         Toast.makeText(
             getApplicationContext()
@@ -73,14 +63,6 @@ public class Detalhes extends AppCompatActivity {
             , Toast.LENGTH_SHORT
         ).show();
         disciplinas.remove(idDisc);
-
-        /*
-        +++++++++++++++++++++++++++++++++++++++++++
-
-        EXCLUIR O ARQUIVO DE DISCIPLINA
-
-        +++++++++++++++++++++++++++++++++++++++++++
-        */
 
         finish();
     }
@@ -92,41 +74,55 @@ public class Detalhes extends AppCompatActivity {
     public void gravar(View view){
         float p1, p2;
 
-
         try {
-            p1 = Float.parseFloat(getEditText(R.id.txtP1).getText().toString());
+            p1 = Float.parseFloat(getEditText(R.id.edP1).getText().toString());
 
         } catch (Exception ex){ p1 = 0; }
 
         try {
-            p2 = Float.parseFloat(getEditText(R.id.txtP2).getText().toString());
+            p2 = Float.parseFloat(getEditText(R.id.edP2).getText().toString());
         } catch (Exception ex){ p2 = 0; }
 
-        Toast.makeText(
-                getApplicationContext()
-                , "GRAVAR AS NOTAS NO ARQUIVO." + " ||p1->" + p1 + " ||p2->" + p2
-                , Toast.LENGTH_SHORT
-        ).show();
 
+        if(p1 < 0 || p1 > 10 || p2 < 0 || p2 > 10){
+            Toast.makeText(
+                    getApplicationContext()
+                    , "As notas devem ser de 0 a 10!"
+                    , Toast.LENGTH_SHORT
+            ).show();
+        } else {
+            Toast.makeText(
+                    getApplicationContext()
+                    , "Notas salvas com sucesso!"
+                    , Toast.LENGTH_SHORT
+            ).show();
 
-        /*
-        +++++++++++++++++++++++++++++++++++++++++++
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putFloat("p1", p1);
+            editor.putFloat("p2", p2);
+            editor.commit();
+            refreshNotas();
+        }
+    }
 
-        GRAVAR OS DADOS NO ARQUIVO DE DISCIPLINA
+    public void refreshNotas(){
+        pref = this.getSharedPreferences(disciplinas.get(idDisc), Context.MODE_PRIVATE);
 
-        +++++++++++++++++++++++++++++++++++++++++++
-        */
+        try {
+            float p1 = pref.getFloat("p1", 0);
+            float p2 = pref.getFloat("p2", 0);
 
-        //int qtde = pref.getInt("qtde", 0)+1;
-        //float soma = (float) (pref.getFloat("soma", 0)+result);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putFloat("p1", p1);
-        editor.putFloat("p2", p2);
-        editor.commit();
+            TextView etp1 = (TextView)findViewById(R.id.textP1);
+            TextView etp2 = (TextView)findViewById(R.id.textP2);
+            etp1.setText("Nota da P1 -> " + p1);
+            etp2.setText("Nota da P2 -> " + p2);
 
+            EditText ed1 = (EditText)findViewById(R.id.edP1);
+            EditText ed2 = (EditText)findViewById(R.id.edP2);
+            ed1.setText(""+p1);
+            ed2.setText(""+p2);
 
-
-
+        }catch (Exception Ex){}
     }
 
 }
